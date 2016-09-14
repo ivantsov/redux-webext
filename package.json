@@ -13,7 +13,7 @@
     "build:watch": "npm run build -- -w",
     "test": "jest --coverage && coveralls < coverage/lcov.info",
     "test:watch": "jest --watch",
-    "lint": "eslinnt src tests"
+    "lint": "eslint src tests"
   },
   "repository": {
     "type": "git",
