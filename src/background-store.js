@@ -10,7 +10,14 @@ let store, actions, onDisconnect;
 function handleMessage(msg, sender, cb) {
     if (msg.type === DISPATCH) {
         const actionData = msg.data;
-        actions[actionData.type](actionData.data);
+        const action = actions[actionData.type];
+
+        if (action) {
+            action(actionData.data);
+        }
+        else {
+            console.error(`Provided in background store "actions" object doesn't contain "${actionData.type}" key.`);
+        }
     }
     else if (msg.type === UPDATE_STATE) {
         cb(store.getState());
