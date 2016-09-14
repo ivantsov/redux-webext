@@ -3,11 +3,17 @@
   "version": "1.0.0",
   "description": "Package for simplifying work with i18n in Web Extensions",
   "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
-    "test": "jest && coveralls < coverage/lcov.info",
-    "lint": "eslint src tests",
+    "prepublish": "npm run clean && npm run build",
+    "clean": "rimraf lib",
     "build": "babel src -d lib",
-    "build:watch": "npm run build -- -w"
+    "build:watch": "npm run build -- -w",
+    "test": "jest --coverage && coveralls < coverage/lcov.info",
+    "test:watch": "jest --watch",
+    "lint": "eslinnt src tests"
   },
   "repository": {
     "type": "git",
