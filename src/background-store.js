@@ -1,3 +1,5 @@
+/* @flow */
+
 import {
     CONNECTION_NAME,
     DISPATCH,
@@ -7,16 +9,20 @@ import {
 let store, actions, onDisconnect;
 
 // eslint-disable-next-line consistent-return
-function handleMessage(msg, sender, cb) {
+function handleMessage(
+    msg: Object,
+    sender: ?string,
+    cb: (res: any) => void
+): ?boolean {
     if (msg.type === DISPATCH) {
-        const actionData = msg.data;
-        const action = actions[actionData.type];
+        const {type, data} = msg.data;
+        const action = actions[type];
 
         if (action) {
-            action(actionData.data);
+            action(data);
         }
         else {
-            console.error(`Provided in background store "actions" object doesn't contain "${actionData.type}" key.`);
+            console.error(`Provided in background store "actions" object doesn't contain "${type}" key.`);
         }
     }
     else if (msg.type === UPDATE_STATE) {
@@ -28,7 +34,7 @@ function handleMessage(msg, sender, cb) {
 }
 
 // allow other parts of the app to reuse the store, e.g. popup
-function handleConnection(connection) {
+function handleConnection(connection: Connection): void {
     if (connection.name !== CONNECTION_NAME) {
         return;
     }
@@ -51,8 +57,12 @@ function handleConnection(connection) {
     });
 }
 
-export default function createBackgroundStore(options = {}) {
-    if (typeof options.store !== 'object') {
+export default function createBackgroundStore(options: {
+    store: Store,
+    actions?: Object,
+    onDisconnect?: EmptyFunc
+}): Store {
+    if (typeof options !== 'object' || typeof options.store !== 'object') {
         throw new Error('Expected the "store" to be an object.');
     }
 
@@ -65,7 +75,7 @@ export default function createBackgroundStore(options = {}) {
     }
 
     store = options.store;
-    actions = options.actions;
+    actions = options.actions || {};
     onDisconnect = options.onDisconnect;
 
     chrome.runtime.onConnect.addListener(handleConnection);

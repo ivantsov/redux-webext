@@ -1,3 +1,5 @@
+/* @flow */
+
 import {
     CONNECTION_NAME,
     DISPATCH,
@@ -7,7 +9,7 @@ import {
 let listeners = [];
 let state;
 
-function handleMessage(msg) {
+function handleMessage(msg: Object): void {
     if (msg.type === UPDATE_STATE) {
         state = msg.data;
 
@@ -15,7 +17,7 @@ function handleMessage(msg) {
     }
 }
 
-function subscribe(listener) {
+function subscribe(listener: EmptyFunc): EmptyFunc {
     listeners.push(listener);
 
     // return unsubscribe function
@@ -24,7 +26,7 @@ function subscribe(listener) {
     };
 }
 
-function dispatch(data) {
+function dispatch(data: any): void {
     // perform an action to change state of "background" store
     chrome.runtime.sendMessage({
         type: DISPATCH,
@@ -32,11 +34,11 @@ function dispatch(data) {
     });
 }
 
-function getState() {
+function getState(): Object {
     return state;
 }
 
-export default function () {
+export default function (): Promise<Store> {
     // connect to "background" store
     const connection = chrome.runtime.connect({name: CONNECTION_NAME});
 
