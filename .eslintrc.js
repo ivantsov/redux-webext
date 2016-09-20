@@ -1,7 +1,17 @@
 module.exports = {
-    extends: 'airbnb-base',
+    parser: 'babel-eslint',
+    extends: [
+        'airbnb-base',
+        'plugin:flowtype/recommended'
+    ],
+    plugins: [
+        'flowtype'
+    ],
     env: {
-        webextensions: true
+        browser: true,
+        webextensions: true,
+        jasmine: true,
+        jest: true
     },
     rules: {
         indent: ['error', 4],
@@ -15,6 +25,9 @@ module.exports = {
             'allowSingleLine': false
         }],
         'linebreak-style': 'off',
-        'no-prototype-builtins': 'off'
+        'no-prototype-builtins': 'off',
+        'arrow-parens': 'off',
+        'max-len': 'off',
+        'generator-star-spacing': 0 // TODO: babel-eslint bug https://github.com/babel/babel-eslint/issues/350
     }
 };

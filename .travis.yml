@@ -2,8 +2,7 @@ language: node_js
 node_js:
   - "6"
 script:
-  - npm run lint
-  - npm test
+  - npm run check-code
   - npm run build
 cache:
   directories:

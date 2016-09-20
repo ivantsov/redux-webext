@@ -68,7 +68,7 @@ describe('background-store', () => {
             const options = {
                 store: {
                     subscribe: jest.fn(() => unsubscribe),
-                        getState: jest.fn()
+                    getState: jest.fn()
                 }
             };
 
