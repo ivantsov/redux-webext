@@ -1,0 +1,9 @@
+[ignore]
+<PROJECT_ROOT>/coverage/.*
+
+[include]
+
+[libs]
+decls/
+
+[options]
