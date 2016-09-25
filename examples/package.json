@@ -1,0 +1,29 @@
+{
+  "name": "redux-ext-examples",
+  "version": "1.0.0",
+  "author": {
+    "name": "Alexander Ivantsov",
+    "email": "alexivantsov@ya.ru"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack"
+  },
+  "dependencies": {
+    "copy-webpack-plugin": "^3.0.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-redux": "^4.4.5",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
+    "babel-plugin-transform-class-properties": "^6.11.5",
+    "babel-preset-react": "^6.11.1",
+    "html-webpack-plugin": "^2.22.0",
+    "webpack": "^2.1.0-beta.25",
+    "write-file-webpack-plugin": "^3.3.0"
+  }
+}

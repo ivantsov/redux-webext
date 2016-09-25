@@ -1,0 +1,14 @@
+{
+    "manifest_version": 2,
+    "name": "redux-ext example",
+    "version": "1.0.0",
+    "description": "Example of using redux-ext in WebExtensions",
+    "browser_action": {
+        "default_title": "Popup",
+        "default_popup": "pages/popup.html"
+    },
+    "author": "Alexander Ivantsov <alexivantsov@ya.ru>",
+    "background": {
+        "page": "pages/background.html"
+    }
+}
