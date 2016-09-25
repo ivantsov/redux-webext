@@ -19,7 +19,9 @@ function createStore(params) {
 
     return {
         store: createBackgroundStore({
-            store: {},
+            store: {
+                dispatch: jest.fn()
+            },
             ...params
         }),
         handleConnect: chrome.runtime.onConnect.addListener.mock.calls[0][0],
@@ -173,10 +175,11 @@ describe('background-store', () => {
             it('the action exists', () => {
                 const actionName = 'load';
                 const actionData = 123;
+                const actionResult = 456;
                 const actions = {
-                    [actionName]: jest.fn()
+                    [actionName]: jest.fn(() => actionResult)
                 };
-                const {handleMessage} = createStore({actions});
+                const {store, handleMessage} = createStore({actions});
 
                 window.console.error = jest.fn();
 
@@ -189,6 +192,7 @@ describe('background-store', () => {
                 });
 
                 expect(actions[actionName]).lastCalledWith(actionData);
+                expect(store.dispatch).lastCalledWith(actionResult);
                 expect(window.console.error).not.toBeCalled();
             });
         });
