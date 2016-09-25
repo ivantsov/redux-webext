@@ -19,7 +19,7 @@ function handleMessage(
         const action = actions[type];
 
         if (action) {
-            action(data);
+            store.dispatch(action(data));
         }
         else {
             console.error(`Provided in background store "actions" object doesn't contain "${type}" key.`);
