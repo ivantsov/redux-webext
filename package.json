@@ -1,5 +1,5 @@
 {
-  "name": "redux-ext",
+  "name": "redux-webext",
   "version": "1.0.0",
   "description": "Redux for WebExtensions",
   "main": "lib/index.js",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ivantsov/redux-ext.git"
+    "url": "git+https://github.com/ivantsov/redux-webext.git"
   },
   "keywords": [
     "redux",
@@ -35,9 +35,9 @@
   "author": "Alexander Ivantsov <alexivantsov@ya.ru> (https://github.com/ivantsov)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ivantsov/redux-ext/issues"
+    "url": "https://github.com/ivantsov/redux-webext/issues"
   },
-  "homepage": "https://github.com/ivantsov/redux-ext#readme",
+  "homepage": "https://github.com/ivantsov/redux-webext#readme",
   "devDependencies": {
     "babel-cli": "^6.14.0",
     "babel-eslint": "^6.1.2",
