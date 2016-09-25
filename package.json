@@ -1,7 +1,7 @@
 {
   "name": "redux-ext",
   "version": "1.0.0",
-  "description": "Package for simplifying work with i18n in Web Extensions",
+  "description": "Redux for WebExtensions",
   "main": "lib/index.js",
   "files": [
     "lib"
@@ -10,8 +10,9 @@
     "prepublish": "npm run clean && npm run check-code && npm run build",
     "clean": "rimraf lib",
     "check-code": "npm run lint && npm run flow && npm test",
-    "test": "jest --coverage && coveralls < coverage/lcov.info",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
+    "test-coverage": "coveralls < coverage/lcov.info",
     "lint": "eslint src tests",
     "flow": "flow check",
     "build": "babel src -d lib",
@@ -25,7 +26,7 @@
     "redux",
     "store",
     "state",
-    "web-extension",
+    "webextension",
     "extension",
     "webext",
     "chrome",
