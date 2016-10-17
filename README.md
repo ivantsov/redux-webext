@@ -54,11 +54,44 @@ Also there's [tutorial with example](https://github.com/ivantsov/redux-webext/tr
 #### Options
 
 - `store` - instance of Redux store.
-- `actions` (optional) - object with `background` actions that will be provided to `ui` components.
-- `onDisconnect` (optional) - function that will be called on destroying `ui` store (e.g. right after closing a popup).
+- `actions` (optional) - object which keys are types of actions in _UI_ page and values are actions in _background_ page.
+- `onDisconnect` (optional) - function that will be called on destroying _UI_ store (e.g. right after closing a popup).
 
 Returns the provided `store`.
 
-#### `createUIStore()` - creates Redux store for _ui_ pages.
+#### Example
 
-Returns `promise` which will be resolved after receiving the current state of `background` store. And an object with identical to Redux store structure will be passed as resolved result.
+```js
+const store = createStore(reducer); // real Redux store
+
+const backgroundStore = createBackgroundStore({
+    store,
+    actions: {
+        // "INCREMENT_UI_COUNTER" is a string that will be used as a type of action in UI page
+        // "incrementUICounter" is an action is background page
+        INCREMENT_UI_COUNTER: incrementUICounter,
+        DECREMENT_UI_COUNTER: decrementUICounter
+    }
+});
+```
+
+#### `createUIStore()` - creates Redux store for _UI_ pages.
+
+Returns `promise` which will be resolved after receiving the current state of _background_ store. And an object with identical to Redux store structure will be passed as resolved result.
+
+#### Example
+
+```js
+async function initApp() {
+    const store = await createUIStore();
+
+    ReactDOM.render(
+        <Provider store={store}>
+            <App/>
+        </Provider>,
+        document.getElementById('app')
+    );
+}
+
+initApp();
+```
