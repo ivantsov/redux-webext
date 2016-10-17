@@ -35,12 +35,7 @@ In a nutshell, `redux-webext` takes care of communication between _background_ a
 * In _background_ page there is Redux store that contains the entire state of your WebExtension. All logic (actions, reducers etc) is placed in _background_ page as well.
 * _UI_ pages have access to the state via their own Redux stores, but **there are no real actions or reducers**. I said *real* because _UI_ pages might have functions associated with actions in _background_ page. You can think about it like a proxy that allows you to call _background_ actions from _UI_ pages.
 
-Now let's consider the situations when the state can be changed:
-
-* Something happened in _background_ page. In this case we just call an action as usual in Redux, reducers return a new state and `redux-webext` notifies all stores (_background_ and _UI_ ones) in your WebExtension.
-* User interaction in _UI_ page (e.g. user click on a button in popup). Firstly, in _UI_ page we call a function associated with a *real* action in _background_ page. Then `redux-webext` calls the _real_ action and afterwards everything works as in the previous case.
-
-Also there's [tutorial with example](https://github.com/ivantsov/redux-webext/tree/master/examples) where you can find how to use `redux-ext`.
+The words above don't make a lot of sense without code, right? So, there's [tutorial with example](https://github.com/ivantsov/redux-webext/tree/master/examples) where you can find how to use `redux-webext` and how it works.
 
 ## Examples
 
