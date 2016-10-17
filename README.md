@@ -39,7 +39,7 @@ The words above don't make a lot of sense without code, right? So, there's [tuto
 
 ## Examples
 
-* https://github.com/ivantsov/redux-webext/tree/master/examples - an exhaustive tutorial based on a simple extension
+* https://github.com/ivantsov/redux-webext/tree/master/examples - an simple example with tutorial 
 * https://github.com/ivantsov/yandex-mail-notifier-chrome - a real extension that uses `redux-webext`
 
 ## API
