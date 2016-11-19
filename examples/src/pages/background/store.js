@@ -1,5 +1,5 @@
 import {createStore} from 'redux';
-import {createBackgroundStore} from '../../../../src';
+import {createBackgroundStore} from 'redux-webext';
 import {INCREMENT_UI_COUNTER, DECREMENT_UI_COUNTER} from '../constants';
 import reducer from './reducers';
 import {incrementUICounter, decrementUICounter} from './actions';

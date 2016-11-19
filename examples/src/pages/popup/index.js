@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {createUIStore} from '../../../../src';
+import {createUIStore} from 'redux-webext';
 import App from './app';
 
 async function initApp() {
