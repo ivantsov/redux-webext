@@ -156,7 +156,7 @@ describe('background-store', () => {
 
     describe('handle message', () => {
         describe('dispatch', () => {
-            it('the action doesnt exist', () => {
+            it('the action does not exist', () => {
                 const {handleMessage} = createStore({actions: {}});
                 const actionName = 'fake';
 
@@ -164,7 +164,7 @@ describe('background-store', () => {
 
                 handleMessage({
                     type: DISPATCH,
-                    data: {
+                    action: {
                         type: actionName
                     }
                 });
@@ -172,28 +172,46 @@ describe('background-store', () => {
                 expect(window.console.error).lastCalledWith(`Provided in background store "actions" object doesn't contain "${actionName}" key.`);
             });
 
-            it('the action exists', () => {
-                const actionName = 'load';
-                const actionData = 123;
-                const actionResult = 456;
-                const actions = {
-                    [actionName]: jest.fn(() => actionResult)
-                };
-                const {store, handleMessage} = createStore({actions});
+            describe('the action exists', () => {
+                function testCase(actionData) {
+                    const action = {
+                        type: 'load',
+                        ...actionData
+                    };
+                    const actionResult = 456;
+                    const actions = {
+                        [action.type]: jest.fn(() => actionResult)
+                    };
+                    const {store, handleMessage} = createStore({actions});
 
-                window.console.error = jest.fn();
+                    window.console.error = jest.fn();
 
-                handleMessage({
-                    type: DISPATCH,
-                    data: {
-                        type: actionName,
-                        data: actionData
-                    }
+                    handleMessage({
+                        type: DISPATCH,
+                        action
+                    });
+
+                    expect(actions[action.type]).lastCalledWith(actionData);
+                    expect(store.dispatch).lastCalledWith(actionResult);
+                    expect(window.console.error).not.toBeCalled();
+                }
+
+                it('action data is empty', () => {
+                    testCase();
                 });
 
-                expect(actions[actionName]).lastCalledWith(actionData);
-                expect(store.dispatch).lastCalledWith(actionResult);
-                expect(window.console.error).not.toBeCalled();
+                it('action data is just an object', () => {
+                    testCase({value: 123});
+                });
+
+                it('action data is a nested object', () => {
+                    testCase({
+                        obj: {
+                            value1: 123
+                        },
+                        value2: 456
+                    });
+                });
             });
         });
 

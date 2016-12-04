@@ -55,7 +55,10 @@ describe('ui-store', () => {
 
         store.dispatch(action);
 
-        expect(chrome.runtime.sendMessage).lastCalledWith({type: DISPATCH, data: action});
+        expect(chrome.runtime.sendMessage).lastCalledWith({
+            type: DISPATCH,
+            action
+        });
     });
 
     describe('subscribe', async () => {
