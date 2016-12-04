@@ -8,11 +8,12 @@ import {
 
 function createCounterReducer(increment, decrement) {
     return function (state = 0, action) {
+        const value = action.value || 1;
         switch (action.type) {
             case increment:
-                return state + 1;
+                return state + value;
             case decrement:
-                return state - 1;
+                return state - value;
             default:
                 return state;
         }

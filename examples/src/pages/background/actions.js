@@ -13,10 +13,16 @@ export function decrementBackgroundCounter() {
     return {type: DECREMENT_BACKGROUND_COUNTER};
 }
 
-export function incrementUICounter() {
-    return {type: INCREMENT_UI_COUNTER};
+export function incrementUICounter({value}) {
+    return {
+        type: INCREMENT_UI_COUNTER,
+        value
+    };
 }
 
-export function decrementUICounter() {
-    return {type: DECREMENT_UI_COUNTER};
+export function decrementUICounter({value}) {
+    return {
+        type: DECREMENT_UI_COUNTER,
+        value
+    };
 }
