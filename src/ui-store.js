@@ -26,11 +26,11 @@ function subscribe(listener: EmptyFunc): EmptyFunc {
     };
 }
 
-function dispatch(data: any): void {
+function dispatch(action: any): void {
     // perform an action to change state of "background" store
     chrome.runtime.sendMessage({
         type: DISPATCH,
-        data
+        action
     });
 }
 

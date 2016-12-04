@@ -15,11 +15,12 @@ function handleMessage(
     cb: (res: any) => void
 ): ?boolean {
     if (msg.type === DISPATCH) {
-        const {type, data} = msg.data;
+        const {type, ...actionData} = msg.action;
         const action = actions[type];
 
         if (action) {
-            store.dispatch(action(data));
+            // if action doesn't have any data we should pass "undefined"
+            store.dispatch(action(Object.keys(actionData).length ? actionData : undefined));
         }
         else {
             console.error(`Provided in background store "actions" object doesn't contain "${type}" key.`);
