@@ -1,10 +1,11 @@
 language: node_js
 node_js:
-  - "6"
+  - 7
 script:
   - npm run check-code
-  - npm run test-coverage
+  - npm run test:coverage
   - npm run build
 cache:
+  yarn: true
   directories:
     - node_modules
