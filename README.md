@@ -1,7 +1,7 @@
 # redux-webext
 
 [![Build Status](https://travis-ci.org/ivantsov/redux-webext.svg?branch=master)](https://travis-ci.org/ivantsov/redux-webext)
-[![Coverage Status](https://coveralls.io/repos/github/ivantsov/redux-webext/badge.svg?branch=master)](https://coveralls.io/github/ivantsov/redux-webext?branch=master)
+[![codecov](https://codecov.io/gh/ivantsov/redux-webext/branch/master/graph/badge.svg)](https://codecov.io/gh/ivantsov/redux-webext)
 [![npm version](https://badge.fury.io/js/redux-webext.svg)](https://badge.fury.io/js/redux-webext)
 
 This package allows you to use [Redux](https://github.com/reactjs/redux) for managing the state of your WebExtension.
