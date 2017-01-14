@@ -23,9 +23,9 @@ async function createStore(state) {
 
     expect(chrome.runtime.connect).lastCalledWith({name: CONNECTION_NAME});
     expect(connection.onMessage.addListener).lastCalledWith(jasmine.any(Function));
-    expect(chrome.runtime.sendMessage).lastCalledWith({type: UPDATE_STATE}, null, jasmine.any(Function));
+    expect(chrome.runtime.sendMessage).lastCalledWith({type: UPDATE_STATE}, jasmine.any(Function));
 
-    chrome.runtime.sendMessage.mock.calls[0][2](state);
+    chrome.runtime.sendMessage.mock.calls[0][1](state);
 
     const store = await promise;
 

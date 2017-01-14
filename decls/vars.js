@@ -3,7 +3,6 @@ declare var chrome: {
         connect: (options: {name: string}) => Connection,
         sendMessage: (
             msg: any,
-            sender?: ?string,
             cb?: (res: Object) => void
         ) => void,
         onConnect: {

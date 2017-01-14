@@ -47,7 +47,7 @@ export default function (): Promise<Store> {
 
     // return promise to allow getting current state of "background" store
     return new Promise(resolve => {
-        chrome.runtime.sendMessage({type: UPDATE_STATE}, null, res => {
+        chrome.runtime.sendMessage({type: UPDATE_STATE}, res => {
             state = res;
 
             // return an object with equivalent to Redux store interface
