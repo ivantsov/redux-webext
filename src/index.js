@@ -2,6 +2,7 @@ import BackgroundStore from './background-store';
 import BackgroundStoreSafari from './background-store-safari';
 import UIStore from './ui-store';
 import UIStoreSafari from './ui-store-safari';
+import declareSafariSendMessage from './utils/declareSafariSendMessage';
 
 let backgroundStore = BackgroundStore;
 let uiStore = UIStore;
@@ -13,6 +14,7 @@ try {
     }
 }
 catch (e) {
+    declareSafariSendMessage();
     backgroundStore = BackgroundStoreSafari;
     uiStore = UIStoreSafari;
 }

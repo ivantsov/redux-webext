@@ -36,16 +36,13 @@ function handleMessage(
             state: store.getState()
         };
         sendSafariMessage(response);
-
-        // keep channel open, https://developer.chrome.com/extensions/runtime#event-onMessage
         return true;
     }
 }
 
 export default function createBackgroundStore(options: {
     store: Store,
-    actions?: Object,
-    onDisconnect?: EmptyFunc
+    actions?: Object
 }): Store {
     if (typeof options !== 'object' || typeof options.store !== 'object') {
         throw new Error('Expected the "store" to be an object.');
@@ -62,9 +59,9 @@ export default function createBackgroundStore(options: {
     store = options.store;
     actions = options.actions || {};
 
-    window.addEventListener('message', event => {
-        handleMessage(event.data);
-    });
+    window.addEventListener('message', event =>
+        handleMessage(event.data)
+    );
 
     // send updated state to other parts of the app on every change
     store.subscribe(() => {

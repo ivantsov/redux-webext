@@ -1,24 +1,25 @@
 import {
-    CONNECTION_NAME,
     DISPATCH,
     UPDATE_STATE
 } from '../src/constants';
-import createBackgroundStore from '../src/background-store';
+import createBackgroundStore from '../src/background-store-safari';
 
 function createStore(params) {
+    window.addEventListener = jest.fn();
+
     return {
         store: createBackgroundStore({
             store: {
-                dispatch: jest.fn()
+                dispatch: jest.fn(),
+                subscribe: jest.fn()
             },
             ...params
         }),
-        handleConnect: chrome.runtime.onConnect.addListener.mock.calls[0][0],
-        handleMessage: chrome.runtime.onMessage.addListener.mock.calls[0][0]
+        handleMessage: window.addEventListener.mock.calls[0][1]
     };
 }
 
-describe('background-store', () => {
+describe('background-store-safari', () => {
     describe('invalid params', () => {
         it('no params', () => {
             expect(createBackgroundStore).toThrowError(/store/);
@@ -47,100 +48,11 @@ describe('background-store', () => {
     it('returns the same store', () => {
         const store = {
             prop1: 'prop1',
-            prop2: 'prop2'
+            prop2: 'prop2',
+            subscribe: jest.fn()
         };
 
         expect(createStore({store}).store).toBe(store);
-    });
-
-    describe('handle connection', () => {
-        function testCase(onDisconnect) {
-            const unsubscribe = jest.fn();
-            const options = {
-                store: {
-                    subscribe: jest.fn(() => unsubscribe),
-                    getState: jest.fn()
-                }
-            };
-
-            if (onDisconnect) {
-                options.onDisconnect = onDisconnect;
-            }
-
-            const {store, handleConnect} = createStore(options);
-            const connection = {
-                name: CONNECTION_NAME,
-                postMessage: jest.fn(),
-                onDisconnect: {
-                    addListener: jest.fn()
-                }
-            };
-
-            handleConnect(connection);
-
-            expect(store.subscribe).lastCalledWith(jasmine.any(Function));
-            expect(connection.onDisconnect.addListener).lastCalledWith(jasmine.any(Function));
-
-            store.subscribe.mock.calls[0][0]();
-
-            expect(store.getState).lastCalledWith();
-            expect(connection.postMessage).lastCalledWith({
-                type: UPDATE_STATE,
-                data: store.getState()
-            });
-
-            return {
-                store,
-                unsubscribe,
-                connection
-            };
-        }
-
-        it('dont handle connection with other names', () => {
-            const {handleConnect} = createStore();
-            const connection = {
-                name: 'test',
-                onDisconnect: {
-                    addListener: jest.fn()
-                }
-            };
-
-            handleConnect(connection);
-
-            expect(connection.onDisconnect.addListener).not.toBeCalled();
-        });
-
-        it('on change event', () => {
-            testCase();
-        });
-
-        describe('on disconnect', () => {
-            it('without provided onDisconnect callback', () => {
-                const {
-                    unsubscribe,
-                    connection
-                } = testCase();
-
-                // onDisconnect
-                connection.onDisconnect.addListener.mock.calls[0][0]();
-
-                expect(unsubscribe).lastCalledWith();
-            });
-
-            it('with provided onDisconnect callback', () => {
-                const onDisconnect = jest.fn();
-                const {
-                    unsubscribe,
-                    connection
-                } = testCase(onDisconnect);
-
-                // onDisconnect
-                connection.onDisconnect.addListener.mock.calls[0][0]();
-
-                expect(unsubscribe).lastCalledWith();
-                expect(onDisconnect).lastCalledWith();
-            });
-        });
     });
 
     describe('handle message', () => {
@@ -151,12 +63,12 @@ describe('background-store', () => {
 
                 window.console.error = jest.fn();
 
-                handleMessage({
+                handleMessage({data: {
                     type: DISPATCH,
                     action: {
                         type: actionName
                     }
-                });
+                }});
 
                 expect(window.console.error).lastCalledWith(`Provided in background store "actions" object doesn't contain "${actionName}" key.`);
             });
@@ -175,10 +87,10 @@ describe('background-store', () => {
 
                     window.console.error = jest.fn();
 
-                    handleMessage({
+                    handleMessage({data: {
                         type: DISPATCH,
                         action
-                    });
+                    }});
 
                     expect(actions[action.type]).lastCalledWith(actionData);
                     expect(store.dispatch).lastCalledWith(actionResult);
@@ -206,15 +118,16 @@ describe('background-store', () => {
 
         it('update state', () => {
             const {store, handleMessage} = createStore({store: {
-                getState: jest.fn()
+                getState: jest.fn(),
+                subscribe: jest.fn()
             }});
-            const callback = jest.fn();
 
-            const result = handleMessage({type: UPDATE_STATE}, null, callback);
+            const result = handleMessage({data: {
+                type: UPDATE_STATE
+            }});
 
             expect(result).toBe(true);
             expect(store.getState).lastCalledWith();
-            expect(callback).lastCalledWith(store.getState());
         });
     });
 });
