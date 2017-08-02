@@ -7,9 +7,8 @@ import createUIStore from '../src/ui-store-safari';
 async function createStore(state) {
     window.addEventListener = jest.fn();
 
-    let promise = createUIStore();
+    const promise = createUIStore();
 
-    //expect(window.addEventListener).lastCalledWith('message', jasmine.any(Function), false);
     expect(safari.extension.globalPage.contentWindow.sendMessage).lastCalledWith(
         {type: UPDATE_STATE, response: ''},
         jasmine.any(Function)

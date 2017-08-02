@@ -33,6 +33,10 @@ declare var safari: {
                 postMessage: (
                     message: Object,
                     name: string
+                ) => void,
+                sendMessage: (
+                    action: Object,
+                    cb: (res: any) => void
                 ) => void
             }
         }

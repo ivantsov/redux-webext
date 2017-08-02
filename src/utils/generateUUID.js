@@ -20,4 +20,4 @@ export default function generateUUID() {
         }
     }
     return uuid;
-};
+}
