@@ -7,13 +7,12 @@ import declareSafariSendMessage from './utils/declareSafariSendMessage';
 let backgroundStore = BackgroundStore;
 let uiStore = UIStore;
 
-try {
-    if (chrome !== undefined) {
-        backgroundStore = BackgroundStore;
-        uiStore = UIStore;
-    }
+
+if (typeof chrome !== 'undefined') {
+    backgroundStore = BackgroundStore;
+    uiStore = UIStore;
 }
-catch (e) {
+else if (typeof safari !== 'undefined') {
     declareSafariSendMessage();
     backgroundStore = BackgroundStoreSafari;
     uiStore = UIStoreSafari;
