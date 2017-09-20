@@ -3,6 +3,9 @@ import BackgroundStoreSafari from './background-store-safari';
 import UIStore from './ui-store';
 import UIStoreSafari from './ui-store-safari';
 import declareSafariSendMessage from './utils/declareSafariSendMessage';
+import addObjectAssignPolyfill from './utils/object-assign-safari-polyfill';
+
+addObjectAssignPolyfill();
 
 let backgroundStore = BackgroundStore;
 let uiStore = UIStore;

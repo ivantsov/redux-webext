@@ -9,7 +9,8 @@ let store, actions;
 
 function sendSafariMessage(message) {
     safari.extension.popovers.forEach(element => {
-        element.contentWindow.postMessage(message, '*');
+        const clonedMessage = Object.assign({}, message);
+        element.contentWindow.postMessage(clonedMessage, '*');
     });
 }
 
