@@ -17,3 +17,28 @@ declare var chrome: {
         }
     }
 };
+
+declare var safari: {
+    extension: {
+        popovers: [{
+            contentWindow: {
+                postMessage: (
+                    message: Object,
+                    name: string
+                ) => void
+            }
+        }],
+        globalPage: {
+            contentWindow: {
+                postMessage: (
+                    message: Object,
+                    name: string
+                ) => void,
+                sendMessage: (
+                    action: Object,
+                    cb: (res: any) => void
+                ) => void
+            }
+        }
+    }
+};

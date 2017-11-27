@@ -13,6 +13,9 @@ module.exports = {
         jasmine: true,
         jest: true
     },
+    globals: {
+        safari: true
+    },
     rules: {
         indent: ['error', 4],
         'one-var': ['error', {
@@ -28,6 +31,8 @@ module.exports = {
         'no-prototype-builtins': 'off',
         'arrow-parens': 'off',
         'max-len': 'off',
+        'no-bitwise': 'off',
+        'import/no-mutable-exports': 'off',
         'generator-star-spacing': 0 // TODO: babel-eslint bug https://github.com/babel/babel-eslint/issues/350
     }
 };
