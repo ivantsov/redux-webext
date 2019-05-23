@@ -6,7 +6,9 @@ import {
     UPDATE_STATE
 } from './constants';
 
-let store, actions, onDisconnect;
+import utils from './utils';
+
+let store, actions, onDisconnect, debounceDelay;
 
 // eslint-disable-next-line consistent-return
 function handleMessage(
@@ -40,13 +42,19 @@ function handleConnection(connection: Connection): void {
         return;
     }
 
-    // send updated state to other parts of the app on every change
-    const unsubscribe = store.subscribe(() => {
+    let onStoreEvent = () => {
         connection.postMessage({
             type: UPDATE_STATE,
             data: store.getState()
         });
-    });
+    };
+
+    if (debounceDelay) {
+        onStoreEvent = utils.debounce(onStoreEvent, debounceDelay);
+    }
+
+    // send updated state to other parts of the app on every change
+    const unsubscribe = store.subscribe(onStoreEvent);
 
     // unsubscribe on disconnect
     connection.onDisconnect.addListener(() => {
@@ -61,7 +69,8 @@ function handleConnection(connection: Connection): void {
 export default function createBackgroundStore(options: {
     store: Store,
     actions?: Object,
-    onDisconnect?: EmptyFunc
+    onDisconnect?: EmptyFunc,
+    debounceDelay?: number
 }): Store {
     if (typeof options !== 'object' || typeof options.store !== 'object') {
         throw new Error('Expected the "store" to be an object.');
@@ -75,9 +84,14 @@ export default function createBackgroundStore(options: {
         throw new Error('Expected the "onDisconnect" to be a function.');
     }
 
+    if (options.hasOwnProperty('debounceDelay') && typeof options.debounceDelay !== 'number') {
+        throw new Error('Expected the "debounceDelay" to be a number');
+    }
+
     store = options.store;
     actions = options.actions || {};
     onDisconnect = options.onDisconnect;
+    debounceDelay = options.debounceDelay;
 
     chrome.runtime.onConnect.addListener(handleConnection);
     chrome.runtime.onMessage.addListener(handleMessage);

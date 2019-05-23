@@ -4,6 +4,7 @@ import {
     UPDATE_STATE
 } from '../src/constants';
 import createBackgroundStore from '../src/background-store';
+import utils from '../src/utils';
 
 function createStore(params) {
     window.chrome = {
@@ -53,6 +54,12 @@ describe('background-store', () => {
                 onDisconnect: true
             })).toThrowError(/onDisconnect/);
         });
+        it('debounceDelay is not a number', () => {
+            expect(() => createBackgroundStore({
+                store: {},
+                debounceDelay: true
+            })).toThrowError(/debounceDelay/);
+        });
     });
 
     it('returns the same store', () => {
@@ -65,8 +72,9 @@ describe('background-store', () => {
     });
 
     describe('handle connection', () => {
-        function testCase(onDisconnect) {
+        function testCase(onDisconnect, debounceDelay) {
             const unsubscribe = jest.fn();
+
             const options = {
                 store: {
                     subscribe: jest.fn(() => unsubscribe),
@@ -76,6 +84,10 @@ describe('background-store', () => {
 
             if (onDisconnect) {
                 options.onDisconnect = onDisconnect;
+            }
+
+            if (debounceDelay) {
+                options.debounceDelay = debounceDelay;
             }
 
             const {store, handleConnect} = createStore(options);
@@ -91,9 +103,7 @@ describe('background-store', () => {
 
             expect(store.subscribe).lastCalledWith(jasmine.any(Function));
             expect(connection.onDisconnect.addListener).lastCalledWith(jasmine.any(Function));
-
             store.subscribe.mock.calls[0][0]();
-
             expect(store.getState).lastCalledWith();
             expect(connection.postMessage).lastCalledWith({
                 type: UPDATE_STATE,
@@ -150,6 +160,12 @@ describe('background-store', () => {
 
                 expect(unsubscribe).lastCalledWith();
                 expect(onDisconnect).lastCalledWith();
+            });
+
+            it('with provided debounceDelay callback', () => {
+                utils.debounce = jest.fn(((func) => func));
+                testCase(null, 1000);
+                expect(utils.debounce).lastCalledWith(jasmine.any(Function), 1000);
             });
         });
     });
