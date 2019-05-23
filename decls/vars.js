@@ -14,6 +14,9 @@ declare var chrome: {
                 sender: ?string,
                 cb: (res: any) => void
             ) => ?boolean) => void
+        },
+        onDisconnect: {
+            addListener: (handler: () => ?boolean) => void
         }
     }
 };

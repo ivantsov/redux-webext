@@ -8,12 +8,19 @@ import {
 
 let listeners = [];
 let state;
+let onDisconnect;
 
 function handleMessage(msg: Object): void {
     if (msg.type === UPDATE_STATE) {
         state = msg.data;
 
         listeners.forEach(l => l());
+    }
+}
+
+function handleDisconnect(): void {
+    if (onDisconnect) {
+        onDisconnect();
     }
 }
 
@@ -38,12 +45,22 @@ function getState(): Object {
     return state;
 }
 
-export default function (): Promise<Store> {
+export default function (options?: {
+    onDisconnect?: EmptyFunc,
+} = {}): Promise<Store> {
+    if (options.hasOwnProperty('onDisconnect') && typeof options.onDisconnect !== 'function') {
+        return Promise.reject(new Error('Expected the "onDisconnect" to be a function.'));
+    }
+
+    onDisconnect = options.onDisconnect;
+
     // connect to "background" store
     const connection = chrome.runtime.connect({name: CONNECTION_NAME});
 
     // listen for changes in the "background" store
     connection.onMessage.addListener(handleMessage);
+
+    connection.onDisconnect.addListener(handleDisconnect);
 
     // return promise to allow getting current state of "background" store
     return new Promise(resolve => {
