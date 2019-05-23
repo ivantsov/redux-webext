@@ -9,6 +9,9 @@ async function createStore(state) {
     const connection = {
         onMessage: {
             addListener: jest.fn()
+        },
+        onDisconnect: {
+            addListener: jest.fn()
         }
     };
 
